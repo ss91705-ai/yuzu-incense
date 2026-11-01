@@ -52,7 +52,7 @@ section{position:relative}
 .hero-copy h1{font-size:clamp(30px,3.6vw,42px);font-weight:500;letter-spacing:.22em;line-height:1.5;margin-bottom:18px}
 .hero-copy p{color:#555;margin-bottom:40px;font-size:13px}
 .hero-copy > *{opacity:0;transform:translateY(20px);animation:rise 1s cubic-bezier(.2,.7,.2,1) forwards}
-.hero-copy > *:nth-child(2){animation-delay:.12s}.hero-copy > *:nth-child(3){animation-delay:.24s}.hero-copy > *:nth-child(4){animation-delay:.36s}
+.hero-copy > *:nth-child(2){animation-delay:.12s}.hero-copy > *:nth-child(3){animation-delay:.24s}.hero-copy > *:nth-child(4){animation-delay:.36s}.hero-copy > *:nth-child(5){animation-delay:.48s}
 
 .stage{position:relative;aspect-ratio:1;max-width:460px;width:100%;justify-self:center}
 .stage .sun{position:absolute;inset:8%;border-radius:50%;background:var(--yuzu);transform:scale(.6);opacity:0;animation:grow 1.2s .1s cubic-bezier(.2,.8,.2,1) forwards}
@@ -73,6 +73,26 @@ section{position:relative}
 @keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
 @keyframes smoke{0%{stroke-dashoffset:260;opacity:0}20%{opacity:.9}100%{stroke-dashoffset:-260;opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- countdown ---------- */
+.cd{display:block;width:fit-content;margin:-10px 0 36px;padding:14px 18px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.cd-label{display:flex;justify-content:space-between;gap:16px;font-size:11px;color:var(--muted);letter-spacing:.15em;margin-bottom:4px;line-height:1.6}
+.cd-title{color:var(--ink);font-weight:500}
+.cd-nums{display:flex;gap:14px;align-items:baseline;line-height:1.2}
+.cd-nums span{font-size:11px;color:var(--muted)}
+.cd-nums b{font-family:var(--en);font-weight:500;font-size:24px;color:var(--ink);margin-right:3px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.cd.closed .cd-nums{display:none}
+.cd.closed .cd-title{color:#c0392b}
+.cd-dark{background:transparent;border-color:#444;margin:26px auto 0}
+.cd-dark .cd-title,.cd-dark .cd-nums b{color:#fff}
+.cd-dark .cd-label,.cd-dark .cd-nums span{color:#999}
+.closed-box{text-align:center}
+.closed-box .closed-icon{width:90px;height:90px;margin:0 auto 18px;border-radius:50%;background:var(--yuzu);display:grid;place-items:center;overflow:hidden}
+.closed-box .closed-icon img{height:74px;filter:grayscale(.2)}
+.closed-box h3{font-size:18px;font-weight:500;letter-spacing:.2em;margin-bottom:14px}
+.closed-box p{font-size:13px;color:#555;margin-bottom:24px}
+.is-closed [data-add]{opacity:.35;pointer-events:none}
+.is-closed .float-cta,.is-closed [data-open-only]{display:none}
 
 /* ---------- reveal ---------- */
 .rv{opacity:0;transform:translateY(30px);transition:opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1)}
@@ -269,6 +289,9 @@ footer{padding:40px 6vw;text-align:center;font-size:11px;color:var(--muted)}
 
 /* ---------- responsive ---------- */
 @media (max-width:760px){
+  .cd-nums{gap:10px;justify-content:center}
+  .scroll-hint{display:none}
+  .hero-copy .cd{margin-left:auto;margin-right:auto}
   body{font-size:13.5px}
   .hero{padding:100px 0 90px}
   .hero .wrap{grid-template-columns:1fr;gap:30px}
@@ -307,7 +330,7 @@ footer{padding:40px 6vw;text-align:center;font-size:11px;color:var(--muted)}
       <span class="en">Shoyeido ・ Kyoto ・ Since 1705</span>
       <h1>柚子線香</h1>
       <p>京都三百年香舖 ・ 松榮堂<br>Xiang Do 系列｜日本直送團購</p>
-      <a href="#order" class="btn-line"><span class="c">↓</span>一起訂</a>
+      <a href="#order" class="btn-line" data-open-only><span class="c">↓</span>一起訂</a>
     </div>
     <div class="stage" id="stage">
       <div class="sun"></div>
@@ -452,7 +475,17 @@ footer{padding:40px 6vw;text-align:center;font-size:11px;color:var(--muted)}
   <div class="orb" data-speed="-0.12" style="width:380px;height:380px;top:-150px;right:-130px"></div>
   <div class="orb" data-speed="0.1" style="width:220px;height:220px;bottom:-70px;left:-80px"></div>
   <div class="wrap">
-    <div class="head rv"><span class="en" style="color:#888">Order</span><h2>一起訂</h2><p>日本直送團購 ・ 7-11 取貨</p></div>
+    <div class="head rv"><span class="en" style="color:#888">Order</span><h2>一起訂</h2><p>日本直送團購 ・ 7-11 取貨</p>
+      <div class="cd cd-dark" data-cd>
+        <div class="cd-label"><span class="cd-title">收單倒數</span><span class="cd-date"></span></div>
+        <div class="cd-nums"><span><b data-u="d">00</b>天</span><span><b data-u="h">00</b>時</span><span><b data-u="m">00</b>分</span><span><b data-u="s">00</b>秒</span></div>
+      </div></div>
+    <div class="panel closed-box" id="closedBox" hidden>
+      <div class="closed-icon"><img src="img/box20-box.png" alt=""></div>
+      <h3>本次團購已收單</h3>
+      <p>謝謝大家的支持！<br>已下單的朋友請記得完成匯款，並私訊 IG 告知。<br>錯過這次的話，歡迎追蹤 IG 等下一次開團。</p>
+      <a class="ig-btn" href="https://instagram.com/smooch_home" target="_blank" rel="noopener">追蹤 IG @smooch_home</a>
+    </div>
 
     <form class="panel rv" id="orderForm" novalidate>
       <p class="hp"><label>Don't fill: <input name="bot-field"></label></p>
@@ -555,6 +588,10 @@ const CONFIG = {
   // Google Apps Script 部署後的網址（/exec 結尾），貼在引號裡
   orderApiUrl: 'https://script.google.com/macros/s/AKfycbxBKioPp1Z2ISXpgilXrRWHkEPGwWOS5Y2v6kBYZBIYbvpjN8GqAVAeCB8DO7MYCSWntg/exec',
 
+  // 收單時間（台灣時間）。格式：年-月-日T時:分:秒+08:00
+  // ★ Apps Script 裡的 CLOSE_AT 也要改成一樣的時間
+  closeAt: '2026-11-10T23:59:59+08:00',
+
   bankName:   '彰化銀行（009）',
   bankAcct:   '22005113364100',
   bankMemo:   '線香',            // 請客人在匯款備註填寫的文字
@@ -642,6 +679,7 @@ function makeOrderNo(){
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
+  if (Date.now() >= CLOSE_TS){ setClosed(); alert('本次團購已收單，謝謝支持！'); return; }
   const sum = calc();
   let ok = true;
   if (sum.any === 0){ $('itemErr').style.display = 'block'; ok = false; }
@@ -675,6 +713,7 @@ form.addEventListener('submit', async e => {
     fd.set('ig', $('ig').value.trim().replace(/^@+/, ''));
     const res = await fetch(CONFIG.orderApiUrl, { method:'POST', body: new URLSearchParams(fd) });
     const data = await res.json();
+    if (!data.ok && data.error === 'closed'){ setClosed(); alert('本次團購已收單，謝謝支持！'); return; }
     if (!data.ok) throw new Error(data.error || 'failed');
     sum.total = data.total; sum.ship = data.shipping;   // 以試算表端重新計算的金額為準
     showSuccess(orderNo, sum, lines);
@@ -708,6 +747,34 @@ document.querySelectorAll('.copy').forEach(b => b.addEventListener('click', asyn
   const t = $(b.dataset.copy).textContent.replace(/\s/g,'');
   try{ await navigator.clipboard.writeText(t); b.textContent = '已複製'; setTimeout(() => b.textContent = '複製', 1500); }catch(_){}
 }));
+
+/* ---------- 收單倒數 ---------- */
+const CLOSE_TS = new Date(CONFIG.closeAt).getTime();
+const cds = [...document.querySelectorAll('[data-cd]')];
+(function(){
+  const d = new Date(CLOSE_TS);
+  const tw = new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',month:'numeric',day:'numeric',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(d);
+  const g = t => (tw.find(x => x.type === t) || {}).value || '';
+  const txt = `${g('month')}/${g('day')}（${g('weekday').replace('週','')}）${g('hour')}:${g('minute')} 截止`;
+  cds.forEach(c => c.querySelector('.cd-date').textContent = txt);
+})();
+let closed = false;
+function setClosed(){
+  if (closed) return; closed = true;
+  document.body.classList.add('is-closed');
+  cds.forEach(c => { c.classList.add('closed'); c.querySelector('.cd-title').textContent = '本次團購已收單'; });
+  form.hidden = true;
+  $('closedBox').hidden = false;
+}
+function tick(){
+  const left = CLOSE_TS - Date.now();
+  if (left <= 0){ setClosed(); return; }
+  const t = Math.floor(left / 1000), p = n => String(n).padStart(2,'0');
+  const v = { d: Math.floor(t/86400), h: Math.floor(t%86400/3600), m: Math.floor(t%3600/60), s: t%60 };
+  cds.forEach(c => c.querySelectorAll('[data-u]').forEach(b => b.textContent = p(v[b.dataset.u])));
+  setTimeout(tick, 1000 - Date.now() % 1000);
+}
+tick();
 
 /* ---------- scroll effects ---------- */
 const io = new IntersectionObserver(es => es.forEach(en => {
